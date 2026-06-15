@@ -44,6 +44,9 @@ if [ ! -f "$REMOTE_KEY_PATH" ]; then
   exit 1
 fi
 
+# Generate a timestamp (e.g., 2026-06-04_13-15-56)
+TIMESTAMP=$(date +"%Y-%m-%d_%H-%M-%S")
+
 LOCAL_DIR="$ROOT_DIR/.deployed/" # Store pulled files at the repository root
 
 mkdir -p "$LOCAL_DIR"
@@ -55,11 +58,14 @@ echo "Starting sync-back from $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR..."
 # -v : Verbose (shows you what is being copied)
 # --rsync-path="sudo rsync" : Runs rsync as root on the server to bypass read restrictions
 # --delete : (Optional - uncomment the line below if you want to delete local files that were removed on the server)
-
+#
+# Example:
+# - rsync -av -e "ssh -i ~/.ssh/gcp_ggss_id_ed25519 -p 22 -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" --rsync-path="sudo rsync" john@34.172.75.225:/var/www/ ./.deployed/ 2>&1 | tee ""./.tmp/sync-back-$(date +"%Y-%m-%d_%H-%M-%S").log"
+#
 rsync -av -e "ssh -i $REMOTE_KEY_PATH -p $REMOTE_PORT -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
   --rsync-path="sudo rsync" \
   "$REMOTE_USER@$REMOTE_IP:$REMOTE_DIR" \
   "$LOCAL_DIR" \
-  2>&1 | tee "$SCRIPT_DIR/sync-back.log"
+  2>&1 | tee "$ROOT_DIR/.tmp/sync-back-$TIMESTAMP.log"
 
 echo "Sync complete! Files are located in $LOCAL_DIR"
