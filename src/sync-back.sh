@@ -60,7 +60,7 @@ echo "Starting sync-back from $REMOTE_USER@$REMOTE_IP:$REMOTE_DIR..."
 # --delete : (Optional - uncomment the line below if you want to delete local files that were removed on the server)
 #
 # Example:
-# - rsync -av -e "ssh -i ~/.ssh/gcp_ggss_id_ed25519 -p 22 -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" --rsync-path="sudo rsync" john@34.172.75.225:/var/www/ ./.deployed/ 2>&1 | tee ""./.tmp/sync-back-$(date +"%Y-%m-%d_%H-%M-%S").log"
+# - rsync -av -e "ssh -i ~/.ssh/gcp_ggss_id_ed25519 -p 22 -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" --rsync-path="sudo rsync" john@34.172.75.225:/var/www/ ./.deployed/ 2>&1 | tee "./.tmp/sync-back-$(date +"%Y-%m-%d_%H-%M-%S").log"
 #
 rsync -av -e "ssh -i $REMOTE_KEY_PATH -p $REMOTE_PORT -o IdentitiesOnly=yes -o StrictHostKeyChecking=yes" \
   --rsync-path="sudo rsync" \
